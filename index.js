@@ -23,9 +23,11 @@ app.post('/event', async (req, res) => {
 
     console.log('Sending event to Lambda:', req.body);
     
-    await lambda.invoke(payload).promise();
+    const lambdaResponse = await lambda.invoke(payload).promise();
 
     console.log('Event sent to Lambda:', req.body);
+    console.log('Lambda response:', lambdaResponse);
+    
     res.status(200).json({ message: 'Event sent to Lambda' });
   } catch (err) {
     console.error('Lambda invoke error:', err);
