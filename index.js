@@ -1,17 +1,17 @@
 require('dotenv').config();
-const express = require('express');
-const AWS = require('aws-sdk');
+import express, { json } from 'express';
+import { config, Lambda } from 'aws-sdk';
 
 const app = express();
-app.use(express.json());
+app.use(json());
 
-AWS.config.update({
+config.update({
   region: process.env.AWS_REGION,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-const lambda = new AWS.Lambda();
+const lambda = new Lambda();
 
 app.post('/event', async (req, res) => {
   try {
@@ -21,6 +21,8 @@ app.post('/event', async (req, res) => {
       Payload: JSON.stringify(req.body),
     };
 
+    console.log('Sending event to Lambda:', req.body);
+    
     await lambda.invoke(payload).promise();
 
     console.log('Event sent to Lambda:', req.body);
