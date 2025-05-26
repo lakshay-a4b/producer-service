@@ -1,6 +1,6 @@
-require('dotenv').config();
 import express, { json } from 'express';
-import { config, Lambda } from 'aws-sdk';
+import pkg from 'aws-sdk';
+const { config, Lambda } = pkg;
 
 const app = express();
 app.use(json());
